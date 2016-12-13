@@ -1,0 +1,124 @@
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+using namespace std;
+
+
+
+
+
+
+/*
+ * Global Constants
+ */
+const int MAX_UNBUSTED_NUMBER = 21;
+const int MAX_CARD_VALUE = 10;
+
+
+
+
+
+
+/*
+ * Function Prototypes
+ */
+int generateCard();
+int blackjack();
+
+
+
+
+
+
+
+
+
+
+
+int generateCard(int cardNumber)
+{
+	int newCard = rand() % MAX_CARD_VALUE + 1;	// generates a card of range [1, MAX_CARD_VALUE];
+	cout << "Card " << cardNumber << ": " << newCard << endl;
+
+	return newCard;
+}
+
+
+
+
+
+
+int blackjack()
+{
+	srand(time(0)); // initialize the random number generator seed
+
+	int totalValue = 0;
+	int cardNum = 0;
+	int cardValue = 0;
+	char cardChoice = 'y';
+
+	for (int i = 0; i < 2; i++)
+	{
+		cardNum++;
+		cardValue = generateCard(cardNum);
+		totalValue += cardValue;
+	}
+
+	cout << "Total: " << totalValue << endl;
+
+	while ((totalValue < MAX_UNBUSTED_NUMBER) && (cardChoice == 'y' || cardChoice == 'Y'))
+	{
+
+		cout << "Would you like another card? (y/n): ";
+		cin >> cardChoice;
+
+		if (cardChoice == 'y')
+		{
+			cardNum++;
+			cardValue = generateCard(cardNum);
+			totalValue += cardValue;
+
+			cout << "Total: " << totalValue << endl;
+		}
+	}
+
+	cout << endl;
+
+	return totalValue;
+}
+
+int main()
+{
+	char response = 'n';
+	int result = 0;
+
+	do
+	{
+		result = blackjack();
+		if (result > MAX_UNBUSTED_NUMBER)
+		{
+			cout << "Busted!" << endl;
+		}
+		else if (result == MAX_UNBUSTED_NUMBER)
+		{
+			cout << "Congratulations! Blackjack!" << endl;
+		}
+		else
+		{
+			cout << "Your score is: " << result << endl;
+		}
+
+		cout << "Thanks for playing. Would you like to play again? (y/n): ";
+		cin >> response;
+		cout << endl;
+
+	} while (response == 'y' || response == 'Y');
+
+	return 0;
+}
+
+
+
+
+
+
